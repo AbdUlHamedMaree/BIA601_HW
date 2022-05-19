@@ -1,0 +1,146 @@
+{% extends "base.html" %} {% block head %}
+<title>My amazing blog</title>
+{% endblock %} {% block body %}
+<body class="bg-gray-100">
+  <div>
+    <div class="flex md:block gap-6 min-h-screen max-h-screen">
+      <div
+        class="flex-grow-[1] flex-shrink-0 basis-0 flex flex-col min-w-0 px-4 sm:px-0 py-2 sm:py-0"
+      >
+        <h3 class="text-lg font-medium leading-6 text-gray-900">Inputs</h3>
+        <p class="mt-1 text-sm text-gray-600">
+          here you should to describe the arguments for the problem.
+        </p>
+        <div class="flex-1 flex flex-col shadow rounded p-6 sm:p-3 mt-2 bg-white">
+          <div class="overflow-y-auto flex-1 flex flex-col min-h-0">
+            <div class="">
+              <label
+                for="company-website"
+                class="block text-base font-medium text-gray-700"
+              >
+                Items
+              </label>
+              <div class="flex overflow-x-auto min-w-0 py-2">
+                <div class="flex flex-col justify-around whitespace-nowrap">
+                  <label class="text-gray-700">Name:</label>
+                  <label class="text-gray-700">Benefit:</label>
+                  <label class="text-gray-700">Weight:</label>
+                  <label class="text-gray-700">Delete it?</label>
+                </div>
+                <div id="items-container" class="flex"></div>
+
+                <div class="ml-2 min-w-[8rem] max-w-[8rem]">
+                  <button class="btn btn-primary h-full w-full" onclick="handleAddItem()">
+                    ADD
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="mt-4">
+              <label for="max-weight" class="block text-base font-medium text-gray-700">
+                Knapsack Max Weight:
+              </label>
+              <input
+                type="number"
+                name="max-weight"
+                id="max-weight"
+                autocomplete="knapsack-max-weight"
+                class="input mt-2"
+                min="1"
+                onchange="handleChangeKnapsackMaxWeight(this.value)"
+              />
+            </div>
+            <div class="mt-4">
+              <label
+                for="company-website"
+                class="block text-base font-medium text-gray-700"
+              >
+                Initial Population Size:
+              </label>
+              <input
+                type="number"
+                name="initial-population-size"
+                id="initial-population-size"
+                autocomplete="initial-population-size"
+                class="input mt-2"
+                min="1"
+                onchange="handleChangeInitialPopulationSize(this.value)"
+              />
+            </div>
+            <div class="mt-4">
+              <label
+                for="company-website"
+                class="block text-base font-medium text-gray-700"
+              >
+                Mutation Probability:
+              </label>
+              <input
+                type="number"
+                name="mutation-probability"
+                id="mutation-probability"
+                autocomplete="mutation-probability"
+                class="input mt-2"
+                step="0.1"
+                min="0"
+                max="1"
+                onchange="handleChangeMutationProbability(this.value)"
+              />
+            </div>
+            <div class="mt-4">
+              <label
+                for="company-website"
+                class="block text-base font-medium text-gray-700"
+              >
+                Elite:
+              </label>
+              <input
+                type="number"
+                name="elite"
+                id="elite"
+                autocomplete="elite"
+                class="input mt-2"
+                step="0.1"
+                min="0"
+                max="1"
+                onchange="handleChangeElite(this.value)"
+              />
+            </div>
+          </div>
+          <div class="self-end mt-4">
+            <div class="flex">
+              <input
+                type="number"
+                name="times"
+                id="times"
+                autocomplete="times"
+                class="input rounded-r-none max-w-[100px]"
+                value="10"
+                step="10"
+                min="1"
+                onchange="handleChangeTimes(this.value)"
+              />
+              <button class="btn btn-primary rounded-l-none" onclick="handleRun()">
+                RUN
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="flex-grow-[1] flex-shrink-0 basis-0 px-4 sm:px-0 py-2 sm:py-0 bg-gray-900 text-white flex flex-col min-h-0"
+      >
+        <h3 class="text-lg font-medium leading-6">Console</h3>
+        <p class="mt-1 text-sm">here you can see the result for you execution.</p>
+        <div id="console" class="overflow-y-auto flex-1 font-mono border mt-2">
+          <p></p>
+        </div>
+        <div class="mt-2">
+          <button class="btn btn-primary ring-offset-gray-900" onclick="handleClear()">
+            Clear
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+{% endblock body %}
