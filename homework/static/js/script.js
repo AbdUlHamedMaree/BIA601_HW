@@ -57,7 +57,7 @@ let maxWeight = 22;
 let initialPopulationSize = 10;
 let mutationProbability = 0.3;
 let elite = 0.5;
-let times = 100;
+let times = 10;
 const syncItems = () => {
   itemsContainer.innerHTML = items.map(item => getItemHtml(item)).join('\n');
 };
