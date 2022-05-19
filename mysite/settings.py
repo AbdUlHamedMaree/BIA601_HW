@@ -28,12 +28,10 @@ DEBUG = True
 
 TAILWIND_APP_NAME = 'homework'
 INTERNAL_IPS = [
-    "127.0.0.1",
-    "hmidmrii.pythonanywhere.com",
-    "localhost"
+    "127.0.0.1"
 ]
 
-ALLOWED_HOSTS = ["127.0.0.1"]
+ALLOWED_HOSTS = ["127.0.0.1", "hmidmrii.pythonanywhere.com", "localhost"]
 
 
 # Application definition
