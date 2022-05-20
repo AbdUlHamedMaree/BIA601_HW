@@ -1,4 +1,12 @@
+'use strict';
+
 let itemId = 0;
+
+/**
+ * get the HTML that representing the passed item
+ * @param {{id: number, name: string, benefit: number, weight: number}} item the item you want the html for
+ * @returns {string} the html that represent the item
+ */
 const getItemHtml = item =>
   `<div class="flex flex-col ml-2 min-w-[8rem] max-w-[8rem]">
     <input
@@ -32,8 +40,22 @@ const getItemHtml = item =>
     />
     <button class="btn btn-danger mt-2" onclick="handleDeleteItem(${item.id})">Delete</button>
 </div>`;
+
+/**
+ * get the HTML that representing a log for the passed text
+ * @param {string} text the log text
+ * @returns {string} the html that represent the log
+ */
 const getLogHtml = text => `<p>${text}</p>`;
 
+/**
+ * get an object that holds an item information
+ * @param {number} id item id
+ * @param {string} name item name
+ * @param {number} benefit item benefit
+ * @param {number} weight item weight
+ * @returns {{id: number, name: string, benefit: number, weight: number}} object contains the item information
+ */
 const createItem = (id, name, benefit, weight) => ({ id, name, weight, benefit });
 
 const consoleContainer = document.getElementById('console');
@@ -55,7 +77,7 @@ let items = [
 ];
 let maxWeight = 22;
 let initialPopulationSize = 10;
-let mutationProbability = 0.3;
+let mutationProbability = 0.4;
 let elite = 0.5;
 let times = 10;
 const syncItems = () => {
@@ -97,7 +119,10 @@ const handleChangeTimes = newValue => void (times = +newValue);
 
 const handleRun = async () => {
   try {
+    // use a loading indicator
     consoleContainer.innerHTML = '<p>Running...</p>';
+
+    // sending a request to the server (the problem)
     const response = await fetch('run-code', {
       method: 'POST',
       body: JSON.stringify({
@@ -109,14 +134,26 @@ const handleRun = async () => {
         items,
       }),
     });
+    // if nothing goes wrong
     if (response.ok) {
+      // get the json
       const json = await response.json();
-      logs = json.logs;
+
+      // the logs
+      const logs = json.logs;
+
+      // print the logs to the screen
       consoleContainer.innerHTML = logs.map(log => getLogHtml(log)).join('\n');
+
+      // scroll the console to bottom
       consoleContainer.scroll(0, consoleContainer.scrollHeight);
       return;
     }
-  } catch (err) {}
+  } catch (err) {
+    console.error(err);
+  }
+
+  // print error if something goes wrong
   consoleContainer.innerHTML = `<p style="color: red">Error!</p>`;
 };
 
