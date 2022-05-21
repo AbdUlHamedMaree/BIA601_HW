@@ -96,15 +96,6 @@ class GeneticAlgorithm:
                 weight += self.items[i].weight
         return weight <= self.max_weight
 
-    def filter_duplicated(self, arr: list):
-        """Filter the duplicated chromosomes to get better results when crossover two parents"""
-
-        result = []
-        for i in arr:
-            if i not in result:
-                result.append(i)
-        return result
-
     def stringify_chromosome(self, chromosome: 'list[int]'):
         """Get the names of the items of this chromosome"""
 
@@ -128,23 +119,22 @@ class GeneticAlgorithm:
 
         result = []
 
-        result.append("max iterations = %d" % self.max_iterations)
-
-        # filter by the criteria
-        self.population = list(
-            filter(lambda x: self.acceptable(x), self.population))
-
         for i in range(self.max_iterations):
-            # filter the duplication
-            self.population = self.filter_duplicated(self.population)
-
+            # filter by the criteria
+            self.population = list(
+                filter(lambda x: self.acceptable(x), self.population))
             # get every chromosome score
             chromosomes_with_score = [(self.fitness(v), v)
                                       for v in self.population]
-
             # sort them by the best
             chromosomes_with_score.sort(reverse=True)
             ranked_chromosomes = [v for (_, v) in chromosomes_with_score]
+
+            # get the best score of this iteration
+            result.append("best fitness score in iteration (%d) is (%d) and the weight is (%d) for items %s" %
+                          (i+1, chromosomes_with_score[0][0], self.calc_weight(chromosomes_with_score[0][1]),
+                           self.stringify_chromosome(chromosomes_with_score[0][1]))
+                          )
 
             # the amount that we pick from the population
             top_elite = int(self.elite*(len(ranked_chromosomes)-1))
@@ -152,30 +142,18 @@ class GeneticAlgorithm:
             self.population = ranked_chromosomes[0:top_elite]
 
             while len(self.population) < self.population_size:
+                c1 = random.randint(0, top_elite)
+                c2 = random.randint(0, top_elite)
+
+                # crossover on a random two parents
+                new_chromosome = self.crossover(ranked_chromosomes[c1],
+                                                ranked_chromosomes[c2])
+
+                # apply mutation on a the new chromosome
                 if random.random() < self.mutation_probability:
+                    new_chromosome = self.mutation(new_chromosome)
 
-                    c = random.randint(0, top_elite)
-
-                    # apply mutation on a random chromosome
-                    self.population.append(self.mutation(
-                        ranked_chromosomes[c]))
-                else:
-                    c1 = random.randint(0, top_elite)
-                    c2 = random.randint(0, top_elite)
-
-                    # crossover on a random two parents
-                    self.population.append(self.crossover(
-                        ranked_chromosomes[c1], ranked_chromosomes[c2]))
-
-            # filter by the criteria
-            self.population = list(filter(
-                lambda x: self.acceptable(x), self.population))
-
-            # get the best score of this iteration
-            result.append("best fitness score in iteration (%d) is (%d) and the weight is (%d) for items %s" %
-                          (i+1, chromosomes_with_score[0][0], self.calc_weight(chromosomes_with_score[0][1]),
-                           self.stringify_chromosome(chromosomes_with_score[0][1]))
-                          )
+                self.population.append(new_chromosome)
 
         # return the logs
         return result

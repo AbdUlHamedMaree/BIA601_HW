@@ -8,13 +8,13 @@ let itemId = 0;
  * @returns {string} the html that represent the item
  */
 const getItemHtml = item =>
-  `<div class="flex flex-col ml-2 min-w-[8rem] max-w-[8rem]">
+  `<div class="flex flex-col ml-2 min-w-[4rem] max-w-[4rem]">
     <input
         type="text"
         name="name.${item.id}"
         id="name.${item.id}"
         autocomplete="item-name"
-        class="input"
+        class="input text-center"
         onblur="handleChangeItem(${item.id}, 'name', this.value)"
         value="${item.name}"
     />
@@ -23,7 +23,7 @@ const getItemHtml = item =>
         name="benefit.${item.id}"
         id="benefit.${item.id}"
         autocomplete="item-benefit"
-        class="input mt-2"
+        class="input text-center mt-2"
         min="0"
         onblur="handleChangeItem(${item.id}, 'benefit', this.value)"
         value="${item.benefit}"
@@ -33,7 +33,7 @@ const getItemHtml = item =>
         name="weight.${item.id}"
         id="weight.${item.id}"
         autocomplete="item-weight"
-        class="input mt-2"
+        class="input text-center mt-2"
         min="0"
         onblur="handleChangeItem(${item.id}, 'weight', this.value)"
         value="${item.weight}"
@@ -76,10 +76,10 @@ let items = [
   createItem(++itemId, '7', 4, 4),
 ];
 let maxWeight = 22;
-let initialPopulationSize = 10;
-let mutationProbability = 0.4;
+let initialPopulationSize = 100;
+let mutationProbability = 0.6;
 let elite = 0.5;
-let times = 10;
+let times = 50;
 const syncItems = () => {
   itemsContainer.innerHTML = items.map(item => getItemHtml(item)).join('\n');
 };
